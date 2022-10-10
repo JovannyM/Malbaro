@@ -145,11 +145,7 @@ MyTree.add(18);
 MyTree.add(16);
 MyTree.add(3);
 MyTree.add(7);
-// MyTree.add(2);
-// MyTree.add(4);
-// MyTree.add(8);
-// MyTree.add(3);
 
-MyTree.remove(44);
+MyTree.remove(20);
 
 MyTree.print();
