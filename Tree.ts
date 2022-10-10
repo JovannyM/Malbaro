@@ -37,55 +37,6 @@ class TreeNode<T> {
         if(this.left)  this.left.print('left:');
         if(this.right) this.right.print('right:');
     }
-    
-    remove(element: T) {
-        if(this.value === element) {
-            if(this.left) {
-                if(this.right) {
-                    this.value = this.left.removeAndReturnMax();
-                    return true;
-                }
-                this.root.right = this.left
-                return true;
-            }
-            if(this.right) {
-                if(this.root) {
-                    this.root.right = this.right;
-                    this.right.root = this.root;
-                }
-                this.value = this.right.value;
-                this.right = null;
-                return true;
-            }
-            if(this.root) {
-                if(this.root.left.value === element) {
-                    this.root.left = null;
-                    return true;
-                }
-                this.root.right = null;
-                return true;
-            }
-            
-        }
-        if(this.left && this.value > element) {
-            return this.left.remove(element);            
-        }
-        if(this.right && this.value < element) {
-            return this.right.remove(element);
-        }            
-        return false; 
-    }
-
-    removeAndReturnMax(): T {
-        if(this.right) return this.right.removeAndReturnMax();
-        if(this.left) {
-            this.root.left = this.left;
-            this.left.root = this.root;
-            return this.value;
-        }
-        this.root.left = null;
-        return this.value;
-    }
 }
 
 class Tree<T> {
@@ -112,16 +63,85 @@ class Tree<T> {
         console.log('Tree is empty');        
     }
     
+    findNodeByValue(value: T): TreeNode<T> | null {
+        let node: TreeNode<T> = this.root;
+        while(node.value !== value) {
+            if(node.right && value > node.value) {
+                node = node.right;
+                continue;
+            }
+            if(node.left && value < node.value) {
+                node = node.left;
+                continue;
+            }
+            return null;
+        }
+        return node;    
+    }
+    
     remove(value: T): void {
         if(this.root) {
-            if(this.root.left || this.root.right) {
-                console.log(this.root.remove(value));
-                return;
-            }
-            if(this.root.value === value) {
-                this.root = null;
+            let nodeForRemoving = this.findNodeByValue(value);
+            if(nodeForRemoving) {
+                if(nodeForRemoving.left && nodeForRemoving.right) {
+                    let node = nodeForRemoving.left;
+                    while (true) {
+                        if(node.right) {
+                            node = node.right;
+                            continue;
+                        }
+                        if (node.left) {
+                            nodeForRemoving.value = node.value;
+                            node.root.right = node.left;
+                            break;
+                        }
+                        if(node.root.right && node.root.right.value === node.value) {
+                            nodeForRemoving.value = node.value;
+                            node.root.right = null;
+                            break
+                        } else {
+                            nodeForRemoving.value = node.value;
+                            node.root.left = null;
+                            break
+                        }
+                    }
+                    console.log(true);
+                    return;
+                }
+                
+                
+                if(nodeForRemoving.right) {
+                    if(nodeForRemoving.root) {
+                        nodeForRemoving.root.right = nodeForRemoving.right;
+                        nodeForRemoving.right.root = nodeForRemoving.root;
+                        console.log(true);
+                        return;
+                    }
+                    this.root = this.root.right;
+                    console.log(true);
+                    return;
+                }
+                
+                
+                if(nodeForRemoving.left) {
+                    if(nodeForRemoving.root) {
+                        nodeForRemoving.root.left = nodeForRemoving.left;
+                        nodeForRemoving.left.root = nodeForRemoving.root;
+                        console.log(true);
+                        return;
+                    }
+                    this.root = this.root.left;
+                    console.log(true);
+                    return;
+                }
+
+                if(nodeForRemoving.root.right && nodeForRemoving.root.right.value === value) {
+                    nodeForRemoving.root.right = null;
+                    return;
+                }
+                else nodeForRemoving.root.left = null;                
                 console.log(true);
-                return;
+                return;               
             }
             console.log('Element not found');
             return;
@@ -137,15 +157,13 @@ const MyComparator = <T extends string|number>(current: T , value: T ): -1|0|1 =
 }
 
 const MyTree = new Tree<number>(MyComparator);
+MyTree.add(50);
+MyTree.add(25);
+MyTree.add(100);
 MyTree.add(10);
-MyTree.add(5);
-MyTree.add(20);
-MyTree.add(17);
-MyTree.add(18);
-MyTree.add(16);
-MyTree.add(3);
-MyTree.add(7);
+MyTree.add(30);
+MyTree.add(31);
 
-MyTree.remove(20);
+MyTree.remove(30);
 
 MyTree.print();
