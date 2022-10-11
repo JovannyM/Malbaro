@@ -2,7 +2,7 @@ type Comparator<T> = (current: T, value: T) => 1|0|-1;
 
 class TreeNode<T> {
     value: T;
-    root?: TreeNode<T>
+    root?: TreeNode<T> // Looks too strange. Root of what?
     left?: TreeNode<T>;
     right?: TreeNode<T>;
 
