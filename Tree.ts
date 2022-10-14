@@ -9,6 +9,28 @@ class TreeNode<T> {
     constructor(value: T) {
         this.value = value;
     }
+    
+    revert() {
+        if (this.left && this.right) {
+            const tempNode = this.left;
+            this.left = this.right;
+            this.right = tempNode;
+            this.left.revert();
+            this.right.revert();
+            return;
+        }
+        if(this.left) {
+            this.right = this.left;
+            this.left = null;
+            this.right.revert();
+            return;
+        }
+        if(this.right) {
+            this.left = this.right;
+            this.right = null;
+            this.left.revert();
+        }
+    }
 
     add(value: T, comparator: Comparator<T>) {
         const result = comparator(this.value, value);
@@ -148,6 +170,10 @@ class Tree<T> {
         }
         console.log('Tree is empty');
     }
+    
+    revert() {
+        if(this.root) this.root.revert();
+    }
 }
 
 const MyComparator = <T extends string|number>(current: T , value: T ): -1|0|1 => {
@@ -162,8 +188,7 @@ MyTree.add(25);
 MyTree.add(100);
 MyTree.add(10);
 MyTree.add(30);
-MyTree.add(31);
 
-MyTree.remove(30);
+MyTree.revert();
 
 MyTree.print();
