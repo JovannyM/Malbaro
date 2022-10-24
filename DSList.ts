@@ -45,11 +45,10 @@ class NodeDL<T> {
         this.prev.next = null;
         return true;
     }
-
-    print(node: NodeDL<T>) {
-        let result = `${node.value}`;
-        if (node.next) result += ` ${node.print(node.next)}`;
-        return result;
+    
+    print(node: NodeDL<T>, accumulator: string = ''): string {
+        if (node.next) return node.print(node.next, `${accumulator}${node.value} `);
+        return `${accumulator}${node.value}`;
     }
 }
 
@@ -147,11 +146,10 @@ class DSList<T> {
 }
 
 const newList = new DSList<number>(0);
-newList.add(1);
-newList.add(2);
-newList.add(3);
-newList.add(4);
-newList.add(5);
+
+for (let i = 1; i < 7000; i++) {
+    newList.add(i);
+}
 console.log(newList.toString());
 console.log(`length is ${newList.length}\n`);
 
