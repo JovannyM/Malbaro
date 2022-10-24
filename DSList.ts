@@ -4,11 +4,11 @@ class NodeDL<T> {
     prev?: NodeDL<T>;
 
     constructor(value: T) {
-        this.value = value;        
+        this.value = value;
     }
 
     add(value: T): void {
-        if(this.next) {
+        if (this.next) {
             this.next.add(value);
             return;
         }
@@ -18,13 +18,13 @@ class NodeDL<T> {
 
     removeByIndex(index: number): boolean {
         if (index > 0 && this.next) {
-            return this.next.removeByIndex(index-1);
+            return this.next.removeByIndex(index - 1);
         }
         return this.removeThisNode();
     }
-    
+
     removeByValue(value: T): boolean {
-        if(this.value === value) {
+        if (this.value === value) {
             return this.removeThisNode();
         }
         if (this.next) {
@@ -33,7 +33,7 @@ class NodeDL<T> {
         console.log(`Element by value ${value} not found`);
         return false;
     }
-    
+
     private removeThisNode(): boolean {
         if (this.next) {
             this.next.prev = this.prev;
@@ -46,7 +46,7 @@ class NodeDL<T> {
 
     print(node: NodeDL<T>) {
         let result = `${node.value}`;
-        if(node.next) result += ` ${node.print(node.next)}`;
+        if (node.next) result += ` ${node.print(node.next)}`;
         return result;
     }
 }
@@ -56,12 +56,12 @@ class DSList<T> {
     length = 0;
 
     constructor(value?: T) {
-        if(value) this.createRoot(value);
+        if (value) this.createRoot(value);
     }
 
     add(value: T): void {
         this.length++;
-        if(this.root) {
+        if (this.root) {
             this.root.add(value);
             return;
         }
@@ -69,23 +69,23 @@ class DSList<T> {
     }
 
     removeByIndex(index: number): boolean {
-        if(index > this.length - 1) {
+        if (index > this.length - 1) {
             console.log(`Element by index ${index} not found`);
             return false;
-        }        
-        if(index === 0) {
+        }
+        if (index === 0) {
             return this.removeRoot();
         }
         this.length--;
         return this.root.removeByIndex(index);
     }
-    
+
     removeByValue(value: T): boolean {
-        if(this.root.value === value){
+        if (this.root.value === value) {
             return this.removeRoot();
         }
         const result = this.root.removeByValue(value);
-        if(result) {
+        if (result) {
             this.length--;
             return true;
         }
@@ -121,16 +121,17 @@ newList.add(5);
 console.log(newList.toString());
 console.log(`length is ${newList.length}\n`);
 
-const index = 5;
+// const index = 5;
+//
+// console.log(`Removing by index ${index}`);
+// console.log(newList.removeByIndex(index));
+// console.log(newList.toString());
+// console.log(`length is ${newList.length}\n`);
+//
+// const value = 12;
+//
+// console.log(`Removing by value ${value}`);
+// console.log(newList.removeByValue(value));
+// console.log(newList.toString());
+// console.log(`length is ${newList.length}`);
 
-console.log(`Removing by index ${index}`);
-console.log(newList.removeByIndex(index));
-console.log(newList.toString());
-console.log(`length is ${newList.length}\n`);
-
-const value = 12;
-
-console.log(`Removing by value ${value}`);
-console.log(newList.removeByValue(value));
-console.log(newList.toString());
-console.log(`length is ${newList.length}`);
