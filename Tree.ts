@@ -1,4 +1,4 @@
-type Comparator<T> = (current: T, value: T) => 1|0|-1;
+import {Comparator} from "./comparator";
 
 class TreeNode<T> {
     value: T;

@@ -1,0 +1,1 @@
+export type Comparator<T> = (current: T, value: T) => 1|0|-1;
