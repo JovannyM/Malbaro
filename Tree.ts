@@ -1,4 +1,4 @@
-import {Comparator} from "./comparator";
+import {Comparators, MyComparator} from "./comparators";
 
 class TreeNode<T> {
     value: T;
@@ -32,7 +32,7 @@ class TreeNode<T> {
         }
     }
 
-    add(value: T, comparator: Comparator<T>) {
+    add(value: T, comparator: Comparators<T>) {
         const result = comparator(this.value, value);
         if(result === -1) {
             if(this.left) {
@@ -62,10 +62,10 @@ class TreeNode<T> {
 }
 
 class Tree<T> {
-    comparator: Comparator<T>;
+    comparator: Comparators<T>;
     root?: TreeNode<T>
 
-    constructor(comparator: Comparator<T>) {
+    constructor(comparator: Comparators<T>) {
         this.comparator = comparator;
     }
 
@@ -174,12 +174,6 @@ class Tree<T> {
     revert() {
         if(this.root) this.root.revert();
     }
-}
-
-const MyComparator = <T extends string|number>(current: T , value: T ): -1|0|1 => {
-    if(current < value) return 1;
-    if(current > value) return -1;
-    return 0;
 }
 
 const MyTree = new Tree<number>(MyComparator);
