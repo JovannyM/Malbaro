@@ -1,3 +1,5 @@
+import {Comparators, MyComparator} from "./comparators";
+
 class NodeDL<T> {
     value: T;
     next?: NodeDL<T>;
@@ -59,6 +61,35 @@ class DSList<T> {
         if (value) this.createRoot(value);
     }
 
+    sort(comparator: Comparators<T>): void {
+        let node: NodeDL<T>;
+        let tempValue: T;
+        let stepMax = this.length - 1;
+        let steps = 0;
+
+        if (this.length === 1 || this.length === 0) {
+            return;
+        }
+
+        while (stepMax) {
+            node = this.root;
+            steps = stepMax;
+            while (steps) {
+                if (comparator(node.value, node.next.value) === -1) {
+                    tempValue = node.value;
+                    node.value = node.next.value;
+                    node.next.value = tempValue;
+                    node = node.next
+                    steps--;
+                    continue;
+                }
+                node = node.next;
+                steps--;
+            }
+            stepMax--;
+        }
+    }
+
     add(value: T): void {
         this.length++;
         if (this.root) {
@@ -93,6 +124,9 @@ class DSList<T> {
     }
 
     toString(): string {
+        if (this.length === 0) {
+            return 'List is empty'
+        }
         return this.root.print(this.root);
     }
 
@@ -118,6 +152,11 @@ newList.add(2);
 newList.add(3);
 newList.add(4);
 newList.add(5);
+console.log(newList.toString());
+console.log(`length is ${newList.length}\n`);
+
+newList.sort(MyComparator);
+
 console.log(newList.toString());
 console.log(`length is ${newList.length}\n`);
 
